@@ -1,0 +1,29 @@
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: psp.restricted
+  annotations:
+    seccomp.security.alpha.kubernetes.io/defaultProfileName:  'docker/default'
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default'
+spec:
+  readOnlyRootFilesystem: true
+  privileged: false
+  allowPrivilegeEscalation: false
+  runAsUser:
+    rule: 'MustRunAsNonRoot'
+  supplementalGroups:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1
+        max: 65535
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 1
+        max: 65535
+  seLinux:
+    rule: 'RunAsAny'
+  volumes:
+  - configMap
+  - emptyDir
+  - secret
