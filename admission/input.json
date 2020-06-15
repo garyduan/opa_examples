@@ -1,0 +1,64 @@
+{
+    "rules": [
+        {
+            "category": "Kubernetes", 
+            "cfg_type": "user_created", 
+            "comment": "Allow deployments in system namespaces.", 
+            "criteria": [
+                {
+                    "name": "namespace", 
+                    "op": "containsAny", 
+                    "value": "kube-system,kube-public,istio-system"
+                }
+            ], 
+            "critical": true, 
+            "disable": false, 
+            "id": 1, 
+            "rule_type": "exception"
+        }, 
+        {
+            "category": "Kubernetes", 
+            "cfg_type": "user_created", 
+            "comment": "Allow deployments in NeuVector namespace", 
+            "criteria": [
+                {
+                    "name": "namespace", 
+                    "op": "containsAny", 
+                    "value": "neuvector"
+                }
+            ], 
+            "critical": true, 
+            "disable": false, 
+            "id": 2, 
+            "rule_type": "exception"
+        }, 
+        {
+            "category": "Kubernetes", 
+            "cfg_type": "user_created", 
+            "comment": "", 
+            "criteria": [
+                {
+                    "name": "cveHighWithFixCount", 
+                    "op": ">=", 
+                    "sub_criteria": [
+                        {
+                            "name": "publishDays", 
+                            "op": ">=", 
+                            "value": "30"
+                        }
+                    ], 
+                    "value": "5"
+                }, 
+                {
+                    "name": "namespace", 
+                    "op": "notContainsAny", 
+                    "value": "staging"
+                }
+            ], 
+            "critical": false, 
+            "disable": false, 
+            "id": 1000, 
+            "rule_type": "deny"
+        }
+    ]
+}

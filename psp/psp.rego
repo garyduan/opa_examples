@@ -12,6 +12,9 @@ allow = true {
 }
 
 allow = true {
+    some spec
+    profile[spec]
+    spec.privileged != false
     input.ServiceAccount.namespace = "admin"
 }
 
