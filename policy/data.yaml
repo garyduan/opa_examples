@@ -1,0 +1,24 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-node
+  namespace: demo
+spec:
+  podSelector:
+    matchLabels:
+      app: node-pod
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: nginx-pod
+    ports:
+      - port: 8888
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: redis-pod
+    ports:
+      - protocol: TCP
+        port: 6379
