@@ -1,0 +1,70 @@
+﻿apiVersion: v1
+items:
+- apiVersion: neuvector.com/v1
+  kind: NvClusterSecurityRule
+  metadata:
+    name: containers
+  spec:
+    process:
+    - action: deny
+      name: sshd
+      path: ""
+    target:
+      selector:
+        criteria:
+        - key: container
+          op: =
+          value: '*'
+        name: containers
+      policymode: null
+    version: v1
+- apiVersion: neuvector.com/v1
+  kind: NvClusterSecurityRule
+  metadata:
+    name: 0racle-0
+  spec:
+    ingress:
+    - selector:
+        criteria:
+        - key: service
+          op: =
+          value: myapp-pod.default
+        - key: domain
+          op: =
+          value: default
+        name: nv.myapp-pod.default
+      action: allow
+      applications:
+      - Oracle
+      name: OracleDB-ingress-0
+      ports: any
+      priority: 0
+    target:
+      selector:
+        criteria:
+        - key: address
+          op: =
+          value: oracledb.acme.com
+        name: OracleDB
+      policymode: null
+    version: v1
+- apiVersion: neuvector.com/v1
+  kind: NvSecurityRule
+  metadata:
+    name: nv.myapp-pod.default
+    namespace: default
+  spec:
+    target:
+      selector:
+        criteria:
+        - key: service
+          op: =
+          value: myapp-pod.default
+        - key: domain
+          op: =
+          value: default
+        name: nv.myapp-pod.default
+      policymode: Protect
+    version: v1
+kind: List
+metadata: null
